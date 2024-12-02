@@ -13,9 +13,10 @@ import 'package:flutter_game/src/game_functions.dart';
 import '../components/play_board.dart';
 import '../components/reset_button.dart';
 import '../components/title_2048.dart';
-import 'config.dart';
+import '../enum/enum.dart';
+import '../constants/config.dart';
 
-enum PlayState { welcome, playing, gameOver, won }
+
 
 class MyGame2048 extends FlameGame with HorizontalDragDetector, VerticalDragDetector, TapDetector ,KeyboardEvents{
   MyGame2048({super.children}): super(
@@ -79,10 +80,9 @@ class MyGame2048 extends FlameGame with HorizontalDragDetector, VerticalDragDete
     gameFunctions = GameFunctions(gameRef: this);
     playState = PlayState.playing;
     world.add(ScoreBoard(position:  Vector2(-200, -470), scoreType: ScoreType.totalScore));
-    world.add(ScoreBoard(position:  Vector2(
-        200, -470), scoreType: ScoreType.maxTileValue));
+    world.add(ScoreBoard(position:  Vector2(200, -470), scoreType: ScoreType.maxTileValue));
     world.add(PlayBoard(
-      color: const Color(0xFFb8b894),
+      color: boardColor,
       boxSize: Vector2(size.x * .98, size.x * .98),
       radius: 20,
     ));
@@ -118,7 +118,7 @@ class MyGame2048 extends FlameGame with HorizontalDragDetector, VerticalDragDete
   @override
   void onHorizontalDragEnd(DragEndInfo info) {
     super.onHorizontalDragEnd(info);
-    if(swipingInTiles){
+    if(swipingInTiles && playState == PlayState.playing){
         if(info.velocity.x < 0){
           gameFunctions.moveTile(movingDirection: MovingDirection.left);
         }else{
@@ -131,7 +131,7 @@ class MyGame2048 extends FlameGame with HorizontalDragDetector, VerticalDragDete
   @override
   void onVerticalDragEnd(DragEndInfo info) {
     super.onVerticalDragEnd(info);
-    if(swipingInTiles){
+    if(swipingInTiles && playState == PlayState.playing){
         if(info.velocity.y < 0){
           gameFunctions.moveTile(movingDirection: MovingDirection.up);
         }else{
@@ -140,43 +140,6 @@ class MyGame2048 extends FlameGame with HorizontalDragDetector, VerticalDragDete
       swipingInTiles = false;
     }
   }
-
-
-  /* @override
-  void onPanUpdate(DragUpdateInfo info) {
-    super.onPanUpdate(info);
-    print('---cvdgcv-----${info.eventPosition.global.x}');
-    if(info.eventPosition.global.x >= bgTopLeftCorner.x &&
-        info.eventPosition.global.x < bgTopLeftCorner.x + bg.size.x &&
-        info.eventPosition.global.y > bgTopLeftCorner.y &&
-        info.eventPosition.global.y < bgTopLeftCorner.y + bg.size.y){
-      swipingInTiles = true;
-    }
-  }
-
-  @override
-  void onPanEnd(DragEndInfo info) {
-    super.onPanEnd(info);
-    if(swipingInTiles){
-      if(info.velocity.x.abs() > info.velocity.y.abs()){
-        if(info.velocity.x < 0){
-          gameFunctions.moveTile(movingDirection: MovingDirection.left);
-        }else{
-          gameFunctions.moveTile(movingDirection: MovingDirection.right);
-        }
-      }
-      else{
-
-        if(info.velocity.y < 0){
-          gameFunctions.moveTile(movingDirection: MovingDirection.up);
-        }else{
-          gameFunctions.moveTile(movingDirection: MovingDirection.down);
-        }
-      }
-      swipingInTiles = false;
-    }
-
-  }*/
 
 
   @override

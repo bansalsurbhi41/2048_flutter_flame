@@ -1,11 +1,12 @@
 
 import 'package:flutter/material.dart';
 
-const backgroundColor = Color(0xfffaf8ef);
+const playAreaColor = Color(0xfffffff3);
+const backgroundColor = Color(0xfff2e8cf);
 const textColor = Color(0xff776e65);
 const overLayTextColor = Color(0xff1c1a17);
 const textColorWhite = Color(0xfff9f6f2);
-const boardColor = Color(0xffbbada0);
+const boardColor = Color(0xFFb8b894);
 const emptyTileColor = Color(0xffcdc1b4);
 const buttonColor = Color(0xff8f7a66);
 const scoreColor = Color(0xffbbada0);

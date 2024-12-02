@@ -1,12 +1,12 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_game/src/my_game_2048.dart';
-import 'package:flutter_game/src/overlay_screen.dart';
-import 'package:flutter_game/src/overlay_won_over_screen.dart';
+import 'package:flutter_game/widgets/overlay_screen.dart';
+import 'package:flutter_game/widgets/overlay_won_over_screen.dart';
 
-import '../src/config.dart';
-
-
+import '../constants/config.dart';
+import '../constants/string_const.dart';
+import '../enum/enum.dart';
 
 class GameApp extends StatefulWidget {
   const GameApp({super.key});
@@ -32,7 +32,7 @@ class _GameAppState extends State<GameApp> {
       home: Scaffold(
         body: Container(
             decoration: const BoxDecoration(
-              color: Color(0xfff2e8cf)
+              color: backgroundColor
             ),
           child: SafeArea(
             child: Center(
@@ -45,16 +45,13 @@ class _GameAppState extends State<GameApp> {
                     mouseCursor: MouseCursor.uncontrolled,
                     overlayBuilderMap: {
                       PlayState.welcome.name: (context, game) => const OverlayScreen(
-                        title: 'TAP TO PLAY',
-                        subtitle: 'Use arrow keys or swipe',
+                        title: StringConst.tapToPlay,
                       ),
                       PlayState.gameOver.name: (context, game) => const OverlayWonOverScreen(
-                        title: 'G A M E   O V E R!',
-                        subtitle: 'Tap to Play Again',
+                        title: StringConst.gameOver,
                       ),
                       PlayState.won.name: (context, game) => const OverlayWonOverScreen(
-                        title: 'Y O U   W O N ! ! !',
-                        subtitle: 'Tap to Play Again',
+                        title: StringConst.youWon,
                       ),
                     },
                   ),

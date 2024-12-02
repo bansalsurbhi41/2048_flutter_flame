@@ -4,12 +4,15 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../components/play_tile.dart';
-import 'config.dart';
+import '../constants/string_const.dart';
+import '../enum/enum.dart';
+import '../constants/config.dart';
 import 'my_game_2048.dart';
 
-enum MovingDirection { right, left, up, down }
+
 
 class GameFunctions{
   static const double boxSize = (gameWidth / 4) - 20; // Game width divided by 4
@@ -43,20 +46,20 @@ class GameFunctions{
 
   void fillRandomTile({bool isFirstTime = false}) {
     if(isFirstTime){
-      FlameAudio.play('4.mp3');
+      FlameAudio.play(StringConst.audioFileName);
     }
     // Create a random number generator
     Random random = Random();
-    print("Filling a random tile");
+    debugPrint("Filling a random tile");
     List<PlayTile> emptyTiles = [];
     for (var i = 0; i < 4; i++) {
       // Check if the tile is empty
       emptyTiles.addAll(listOfGameTiles[i].where((tile) => tile.isEmpty()));
     }
     int indexToFill = random.nextInt(emptyTiles.length);
-    print('indexToFill1: $indexToFill');
+    debugPrint('indexToFill1: $indexToFill');
     int randomValue = random.nextInt(100) > 10 ? 2 : 4; // 90% chance of getting 2 and 10% chance of getting 4
-    emptyTiles[indexToFill].text = randomValue;
+    emptyTiles[indexToFill].value = randomValue;
     emptyTiles.remove(emptyTiles[indexToFill]);
     maxTileValue = randomValue > maxTileValue ? randomValue: maxTileValue;
     if (isFirstTime) {
@@ -67,15 +70,15 @@ class GameFunctions{
         indexToFill2 = random.nextInt(emptyTiles.length);
       } while(indexToFill2 == indexToFill);
       randomValue = random.nextInt(100) > 10 ? 2 : 4; // 90% chance of getting 2 and 10% chance of getting 4
-      emptyTiles[indexToFill2].text = randomValue;
-      print('indexToFill2: $indexToFill2');
-      FlameAudio.play('4.mp3');
+      emptyTiles[indexToFill2].value = randomValue;
+      debugPrint('indexToFill2: $indexToFill2');
+      FlameAudio.play(StringConst.audioFileName);
       maxTileValue = randomValue > maxTileValue ? randomValue: maxTileValue;
     }
   }
 
   void moveTile({required MovingDirection movingDirection}) async{
-    FlameAudio.play('4.mp3');
+    FlameAudio.play(StringConst.audioFileName);
     List<PlayTile> columnList = [];
     switch(movingDirection){
       case MovingDirection.right:
@@ -128,7 +131,7 @@ class GameFunctions{
           secondMergeTile: tileList[i + 1],
         );
 
-        maxTileValue = tileList[i].text > maxTileValue ? tileList[i].text : maxTileValue;
+        maxTileValue = tileList[i].value > maxTileValue ? tileList[i].value : maxTileValue;
         if(maxTileValue == 2048){
           gameRef.playState = PlayState.won;
         }
@@ -142,12 +145,12 @@ class GameFunctions{
   }
 
   Future<void> mergeTileWith({required PlayTile firstMergeTile, required PlayTile secondMergeTile}) async {
-    if(firstMergeTile.merged == false && secondMergeTile.merged == false && firstMergeTile.text == secondMergeTile.text || firstMergeTile.text == 0){
+    if(firstMergeTile.merged == false && secondMergeTile.merged == false && firstMergeTile.value == secondMergeTile.value || firstMergeTile.value == 0){
       gameChange = true;
-      if(!firstMergeTile.merged && !secondMergeTile.merged && firstMergeTile.text == secondMergeTile.text ){
-        firstMergeTile.text = firstMergeTile.text + secondMergeTile.text;
-        maxScore = maxScore + firstMergeTile.text;
-        secondMergeTile.text = 0;
+      if(!firstMergeTile.merged && !secondMergeTile.merged && firstMergeTile.value == secondMergeTile.value ){
+        firstMergeTile.value = firstMergeTile.value + secondMergeTile.value;
+        maxScore = maxScore + firstMergeTile.value;
+        secondMergeTile.value = 0;
         secondMergeTile.merged = false;
         firstMergeTile.merged = true;
       }
@@ -171,9 +174,9 @@ class GameFunctions{
   }
 
   bool swapTileModels({required PlayTile tile1, required PlayTile tile2}) {
-    int tempTileModel = tile1.text;
-    tile1.text = tile2.text;
-    tile2.text = tempTileModel;
+    int tempTileModel = tile1.value;
+    tile1.value = tile2.value;
+    tile2.value = tempTileModel;
     return true;
   }
 
@@ -190,12 +193,12 @@ class GameFunctions{
     // Check if any tiles can be merged in any direction
     for (var i = 0; i < 4; i++) {
       for (var j = 0; j < 4; j++) {
-        int currentValue = listOfGameTiles[i][j].text;
+        int currentValue = listOfGameTiles[i][j].value;
         // Check adjacent tiles
-        if (i > 0 && listOfGameTiles[i - 1][j].text == currentValue) return; // Up
-        if (i < 3 && listOfGameTiles[i + 1][j].text == currentValue) return; // Down
-        if (j > 0 && listOfGameTiles[i][j - 1].text == currentValue) return; // Left
-        if (j < 3 && listOfGameTiles[i][j + 1].text == currentValue) return; // Right
+        if (i > 0 && listOfGameTiles[i - 1][j].value == currentValue) return; // Up
+        if (i < 3 && listOfGameTiles[i + 1][j].value == currentValue) return; // Down
+        if (j > 0 && listOfGameTiles[i][j - 1].value == currentValue) return; // Left
+        if (j < 3 && listOfGameTiles[i][j + 1].value == currentValue) return; // Right
       }
     }
 
@@ -207,7 +210,7 @@ class GameFunctions{
   void reset(){
     for(int i = 0; i < 4; i++){
       for(int j = 0; j < 4; j++){
-        listOfGameTiles[i][j].text = 0;
+        listOfGameTiles[i][j].value = 0;
         listOfGameTiles[i][j].merged = false;
       }
     }

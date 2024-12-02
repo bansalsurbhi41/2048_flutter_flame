@@ -1,16 +1,15 @@
 
-import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_game/src/config.dart';
+import 'package:flutter_game/constants/config.dart';
 
 import '../src/my_game_2048.dart';
 
 class PlayTile extends PositionComponent with DragCallbacks, HasGameReference<MyGame2048>{
-  PlayTile({ required this.boxSize, required this.radius, required super.position, this.text = 0}) : super(
+  PlayTile({ required this.boxSize, required this.radius, required super.position, this.value = 0}) : super(
       anchor: Anchor.topCenter,
       size: boxSize,
       children: [RectangleComponent()]
@@ -18,8 +17,7 @@ class PlayTile extends PositionComponent with DragCallbacks, HasGameReference<My
 
   final Vector2 boxSize;
   final double radius;
-  // late TextPaint textPaint;
-  int text;
+  int value;
   bool merged = false;
 
   // @override
@@ -27,8 +25,8 @@ class PlayTile extends PositionComponent with DragCallbacks, HasGameReference<My
   //   super.onLoad();
   //   add(TileValue(
   //     position: Vector2(85, 85),
-  //     value: text.toString(),
-  //     color: text == 2 || text == 4 ? textColor : Colors.white
+  //     value: value.toString(),
+  //     color: value == 2 || value == 4 ? textColor : Colors.white
   //   ));
   // }
 
@@ -40,22 +38,22 @@ class PlayTile extends PositionComponent with DragCallbacks, HasGameReference<My
         Radius.circular(radius),
       ),
       Paint()
-        ..color = tileColors[text]!
+        ..color = tileColors[value]!
         ..style = PaintingStyle.fill,
     );
-    if (this.text != 0) {
+    if (value != 0) {
       TextPaint(
       style: TextStyle(
-          color: text == 2 || text == 4 ? textColor : Colors.white,
+          color: value == 2 || value == 4 ? textColor : Colors.white,
           fontSize: 70,
           fontWeight: FontWeight.bold
       ),
-    ).render(canvas, text.toString(), Vector2(85, 85),anchor: Anchor.center);
+    ).render(canvas, value.toString(), Vector2(85, 85),anchor: Anchor.center);
     }
   }
 
 
-  bool isEmpty() => text == 0;
+  bool isEmpty() => value == 0;
   void reset() => merged = false;
 
 

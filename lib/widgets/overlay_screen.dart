@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import 'config.dart';
+import '../constants/config.dart';
 
 class OverlayScreen extends StatelessWidget {
   const OverlayScreen({
     super.key,
     required this.title,
-    required this.subtitle,
   });
 
   final String title;
-  final String subtitle;
 
   @override
   Widget build(BuildContext context) {

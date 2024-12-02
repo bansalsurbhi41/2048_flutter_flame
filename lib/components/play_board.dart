@@ -1,6 +1,4 @@
 
-
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flame/components.dart';
@@ -31,12 +29,6 @@ class PlayBoard extends RectangleComponent with HasGameReference<MyGame2048>{
         ..color = color
         ..style = PaintingStyle.fill,
     );
-  }
-
-  @override
-  FutureOr<void> onLoad() {
-    // TODO: implement onLoad
-    return super.onLoad();
   }
 
 }
