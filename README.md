@@ -15,12 +15,12 @@ Screenshot 2025-02-12 at 9 19 27 PM" src="https://github.com/user-attachments/
 
 ### Technology
 
-> Flutter
+> Flutter and 
 > Flutter Flame
 
 #### Code Run On
 
-> Android device
+> Android device and
 > web
 
 This project runs on flutter sdk- 3.24.1
